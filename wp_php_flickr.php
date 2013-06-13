@@ -18,14 +18,6 @@ if( !class_exists( 'WP_Http' ) ) {
 	require_once( WP_INSTALL_DIR.'\wp-includes\class-http.php');
 }
 
-require_once( WP_INSTALL_DIR.'\wp-includes\load.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\plugin.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\general-template.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\link-template.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\option.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\cache.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\formatting.php');
-
 class wp_php_flickr {
         var $api_key;
         var $secret;
