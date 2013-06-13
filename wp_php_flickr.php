@@ -14,32 +14,17 @@
  *               http://code.google.com/p/phpflickr/issues/list
  *
  */ 
-if (session_id() == "") {
-        @session_start();
+if( !class_exists( 'WP_Http' ) ) {
+	require_once( WP_INSTALL_DIR.'\wp-includes\class-http.php');
 }
 
-// Decides which include path delimiter to use.  Windows should be using a semi-colon
-// and everything else should be using a colon.  If this isn't working on your system,
-// comment out this if statement and manually set the correct value into $path_delimiter.
-if (strpos(__FILE__, ':') !== false) {
-        $path_delimiter = ';';
-} else {
-        $path_delimiter = ':';
-}
-
-// This will add the packaged PEAR files into the include path for PHP, allowing you
-// to use them transparently.  This will prefer officially installed PEAR files if you
-// have them.  If you want to prefer the packaged files (there shouldn't be any reason
-// to), swap the two elements around the $path_delimiter variable.  If you don't have
-// the PEAR packages installed, you can leave this like it is and move on.
-
-ini_set('include_path', ini_get('include_path') . $path_delimiter . dirname(__FILE__) . '/PEAR');
-
-// If you have problems including the default PEAR install (like if your open_basedir
-// setting doesn't allow you to include files outside of your web root), comment out
-// the line above and uncomment the next line:
-
-// ini_set('include_path', dirname(__FILE__) . '/PEAR' . $path_delimiter . ini_get('include_path'));
+require_once( WP_INSTALL_DIR.'\wp-includes\load.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\plugin.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\general-template.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\link-template.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\option.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\cache.php');
+require_once( WP_INSTALL_DIR.'\wp-includes\formatting.php');
 
 class wp_php_flickr {
         var $api_key;
@@ -86,12 +71,11 @@ class wp_php_flickr {
                 $this->php_version = explode(".", $this->php_version[0]);
 
                 //All calls to the API are done via the POST method using the PEAR::HTTP_Request package.
-                require_once 'HTTP/Request.php';
-                $this->req =& new HTTP_Request();
-                $this->req->setMethod(HTTP_REQUEST_METHOD_POST);
+                $this->req = & new WP_Http();
+                //$this->req->setMethod(HTTP_REQUEST_METHOD_POST);
         }
 
-        function enableCache ($type, $connection, $cache_expire = 600, $table = 'flickr_cache') {
+        function enableCache ($type, $connection, $cache_expire = 600, $table = 'wp_flickr_cache') {
                 // Turns on caching.  $type must be either "db" (for database caching) or "fs" (for filesystem).
                 // When using db, $connection must be a PEAR::DB connection string. Example:
                 //        "mysql://user:password@server/database"
@@ -188,9 +172,6 @@ class wp_php_flickr {
         }
 
         function request ($command, $args = array(), $nocache = false) {
-                //Sends a request to Flickr's REST endpoint via POST.
-                $this->req->setURL($this->REST);
-                $this->req->clearPostData();
                 if (substr($command,0,7) != "flickr.") {
                         $command = "flickr." . $command;
                 }
@@ -204,24 +185,32 @@ class wp_php_flickr {
                 }
                 ksort($args);
                 $auth_sig = "";
+                
+                // http request arguments
+                $body = array();
+                $headers = array();
+                
                 if (!($this->response = $this->getCached($args)) || $nocache) {
                         foreach ($args as $key => $data) {
                                 $auth_sig .= $key . $data;
-                                $this->req->addPostData($key, $data);
+                                $body = array_merge(array($key => $data),$body);
                         }
                         if (!empty($this->secret)) {
                                 $api_sig = md5($this->secret . $auth_sig);
-                                $this->req->addPostData("api_sig", $api_sig);
+                                $body = array_merge(array("api_sig" => $api_sig),$body);
                         }
+                        $args = array_merge($args, $body);
 
-                        $this->req->addHeader("Connection", "Keep-Alive");
-                        
-                        //Send Requests
-                        if ($this->req->sendRequest()) {
-                                $this->response = $this->req->getResponseBody();
-                                $this->cache($args, $this->response);
+                        // set any headers
+                        $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
+                        $args = array_merge($args, $headers);
+
+                        //Sends a request to Flickr's REST endpoint via POST.
+                        $this->response = $this->req->request($this->REST,$args);
+                        if (!is_error($response)) {
+	                          $this->cache($args, $this->response);
                         } else {
-                                die("There has been a problem sending your command to the server.");
+                            die("There has been a problem sending your command to the server.");
                         }
                 }
                 /*
@@ -265,10 +254,13 @@ class wp_php_flickr {
                 $this->token = $token;
         }
 
-        function setProxy ($server, $port) {
-                // Sets the proxy for all phpFlickr calls.
-                $this->req->setProxy($server, $port);
-        }
+        /**
+         * Use the WP properties to define the proxy to use
+         * @param unknown $server
+         * @param unknown $port
+         */
+        //function setProxy ($server, $port) {
+        //}
 
         function getErrorCode () {
                 // Returns the error code of the last call.  If the last call did not
