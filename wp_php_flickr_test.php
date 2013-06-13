@@ -2,17 +2,11 @@
 
 define('WP_INSTALL_DIR','C:\oconnellp\wamp\wordpress');
 
-require_once( WP_INSTALL_DIR.'\wp-config.php');
+// http://theme.fm/2011/09/wordpress-internals-how-wordpress-boots-up-2315/
+// http://theme.fm/wp-content/uploads/2011/09/wordpress-boot-chart.png
 require_once( WP_INSTALL_DIR.'\wp-load.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\wp-db.php');
-//require_once( WP_INSTALL_DIR.'\wp-includes\load.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\plugin.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\general-template.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\link-template.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\option.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\cache.php');
-require_once( WP_INSTALL_DIR.'\wp-includes\formatting.php');
-
+require_once( WP_INSTALL_DIR.'\wp-config.php');
+require_once( WP_INSTALL_DIR.'\wp-settings.php');
 
 require_once('wp_php_flickr.php');
 
