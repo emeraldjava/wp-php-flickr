@@ -310,14 +310,6 @@ class wp_php_flickr {
                 return $url;
         }
 
-        function getFriendlyGeodata ($lat, $lon) {
-                /* I've added this method to get the friendly geodata (i.e. 'in New York, NY') that the
-                 * website provides, but isn't available in the API. I'm providing this service as long
-                 * as it doesn't flood my server with requests and crash it all the time.
-                 */
-                return unserialize(file_get_contents('http://phpflickr.com/geodata/?format=php&lat=' . $lat . '&lon=' . $lon));
-        }
-
         function sync_upload ($photo, $title = null, $description = null, $tags = null, $is_public = null, $is_friend = null, $is_family = null) {
                 $upload_req =& new HTTP_Request();
                 $upload_req->setMethod(HTTP_REQUEST_METHOD_POST);
