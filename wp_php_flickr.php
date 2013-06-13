@@ -207,10 +207,10 @@ class wp_php_flickr {
 
                         //Sends a request to Flickr's REST endpoint via POST.
                         $this->response = $this->req->request($this->REST,$args);
-                        if (!is_error($response)) {
+                        if (!is_wp_error($this->response)) {
 	                          $this->cache($args, $this->response);
                         } else {
-                            die("There has been a problem sending your command to the server.");
+                        	die("There has been a problem sending your command to the server.".PHP_EOL.$this->response->get_error_message());
                         }
                 }
                 /*
@@ -219,7 +219,7 @@ class wp_php_flickr {
                  * the result, so be sure that you look at the results.
                  */
                 //$this->parsed_response = unserialize($this->response);
-                $this->parsed_response = $this->clean_text_nodes(unserialize($this->response));
+                $this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
                 if ($this->parsed_response['stat'] == 'fail') {
                         if ($this->die_on_error) die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
                         else {
