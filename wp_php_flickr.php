@@ -202,7 +202,12 @@ class wp_php_flickr {
                         if (!is_wp_error($this->response)) {
 	                          $this->cache($args, $this->response);
                         } else {
-                        	die("There has been a problem sending your command to the server.".PHP_EOL.$this->response->get_error_message());
+                        	if ($this->die_on_error) {
+	                        	die("There has been a problem sending your command to the server.".PHP_EOL.$this->response->get_error_message());
+                        	} else {
+                        		$this->error_code = $this->response->get_error_code();
+                        		$this->error_msg = $this->response->get_error_message();
+                        	} 
                         }
                 }
                 /*
@@ -213,7 +218,8 @@ class wp_php_flickr {
                 //$this->parsed_response = unserialize($this->response);
                 $this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
                 if ($this->parsed_response['stat'] == 'fail') {
-                        if ($this->die_on_error) die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
+                        if ($this->die_on_error) 
+                        	die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
                         else {
                                 $this->error_code = $this->parsed_response['code'];
                                 $this->error_msg = $this->parsed_response['message'];
