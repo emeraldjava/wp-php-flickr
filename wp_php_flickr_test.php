@@ -8,13 +8,15 @@ require_once( WP_INSTALL_DIR.'\wp-load.php');
 require_once( WP_INSTALL_DIR.'\wp-config.php');
 require_once( WP_INSTALL_DIR.'\wp-settings.php');
 
-require_once('wp_php_flickr.php');
 
 echo 'wp_php_flickr_test'.PHP_EOL;
-$wp_php_flickr = new wp_php_flickr('xx','xx');
 
-$person = $wp_php_flickr->people_findByUsername('bhaa');
-var_dump($person);
+$wp_flickr = new wp_flickr();
+$wp_flickr->wp_flickr_list_album(array());
+
+//$wp_php_flickr = new wp_php_flickr('xx','xx');
+//$person = $wp_php_flickr->people_findByUsername('bhaa');
+//var_dump($person);
 
 //echo $phpFlickr->getErrorCode();
 //echo $phpFlickr->getErrorMsg();
