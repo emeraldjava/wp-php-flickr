@@ -19,6 +19,7 @@ if( !class_exists( 'WP_Http' ) ) {
 }
 
 class wp_php_flickr {
+	
         var $api_key;
         var $secret;
         var $REST = 'http://api.flickr.com/services/rest/';
@@ -28,7 +29,7 @@ class wp_php_flickr {
         var $response;
         var $parsed_response;
         var $cache = false;
-        var $cache_db = null;
+        //var $cache_db = null;
         var $cache_table = null;
         var $cache_dir = null;
         var $cache_expire = null;
@@ -37,7 +38,10 @@ class wp_php_flickr {
         Var $error_msg;
         var $token;
         var $php_version;
-
+        
+        const DB = 'DB';
+        const FS = 'FS';
+        
         /*
          * When your database cache table hits this many rows, a cleanup
          * will occur to get rid of all of the old rows and cleanup the
@@ -75,36 +79,40 @@ class wp_php_flickr {
                 // When using file system, caching, the $connection is the folder that the web server has write
                 // access to. Use absolute paths for best results.  Relative paths may have unexpected behavior
                 // when you include this.  They'll usually work, you'll just want to test them.
-                if ($type == 'db') {
-                        require_once 'DB.php';
-                        $db =& DB::connect($connection);
-                        if (PEAR::isError($db)) {
-                                die($db->getMessage());
-                        }
+                echo 'enableCache '.$type.' '.$connection.' '.wp_php_flickr::DB;
+                
+                if ($type == wp_php_flickr::DB) {
+                        global $wpdb;
+                        $this->cache = wp_php_flickr::DB;
+                        $this->cache_table = $connection;
 
                         /*
                          * If high performance is crucial, you can easily comment
                          * out this query once you've created your database table.
                          */
-
-                        $db->query("
-                                CREATE TABLE IF NOT EXISTS `$table` (
-                                        `request` CHAR( 35 ) NOT NULL ,
-                                        `response` MEDIUMTEXT NOT NULL ,
-                                        `expiration` DATETIME NOT NULL ,
-                                        INDEX ( `request` )
-                                ) TYPE = MYISAM");
-
-                        if ($db->getOne("SELECT COUNT(*) FROM $table") > $this->max_cache_rows) {
-                                $db->query("DELETE FROM $table WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)");
-                                $db->query('OPTIMIZE TABLE ' . $this->cache_table);
+                        if ($wpdb->get_var("SHOW TABLES LIKE '".$this->cache_table."'") != $this->cache_table)
+                        {
+                        	$create_sql = 'CREATE TABLE IF NOT EXISTS '.$this->cache_table.' (
+                        			request CHAR( 35 ) NOT NULL,
+                        			response MEDIUMTEXT NOT NULL,
+                        			expiration DATETIME NOT NULL,
+                        			INDEX ( request )
+                        	) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
+                        	//error_log($create_sql);
+                        	// We use the dbDelta method given by WP!
+                        	require_once ABSPATH.'wp-admin/includes/upgrade.php';
+                        	dbDelta($create_sql);
+                        	error_log("created table ".$this->cache_table);
                         }
 
-                        $this->cache = 'db';
-                        $this->cache_db = $db;
-                        $this->cache_table = $table;
-                } elseif ($type == 'fs') {
-                        $this->cache = 'fs';
+                        if ($wpdb->get_var('SELECT COUNT(*) FROM '.$this->cache_table) > $this->max_cache_rows) {
+	                            $wpdb->query("DELETE FROM $this->cache_table WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)");
+                                $wpdb->query('OPTIMIZE TABLE '.$this->cache_table);
+                        }
+
+
+                } elseif ($type == wp_php_flickr::FS) {
+                        $this->cache = wp_php_flickr::FS;
                         $connection = realpath($connection);
                         $this->cache_dir = $connection;
                         if ($dir = opendir($this->cache_dir)) {
@@ -116,6 +124,7 @@ class wp_php_flickr {
                         }
                 }
                 $this->cache_expire = $cache_expire;
+                echo 'enableCache '. $this->cache_expire;
         }
 
         function getCached ($request) {
@@ -123,8 +132,9 @@ class wp_php_flickr {
                 //If there is no cache result, it returns a value of false. If it finds one,
                 //it returns the unparsed XML.
                 $reqhash = md5(serialize($request));
-                if ($this->cache == 'db') {
-                        $result = $this->cache_db->getOne("SELECT response FROM " . $this->cache_table . " WHERE request = ? AND DATE_SUB(NOW(), INTERVAL " . (int) $this->cache_expire . " SECOND) < expiration", $reqhash);
+                if ($this->cache == wp_php_flickr::DB) {
+ 		               	global $wpdb;
+                        $result = $wpdb->get_var('SELECT response FROM '.$this->cache_table.' WHERE request = "'.$reqhash.'" AND DATE_SUB(NOW(), INTERVAL '.(int) $this->cache_expire . ' SECOND) < expiration');// $reqhash);
                         if (!empty($result)) {
                                 return $result;
                         }
@@ -145,13 +155,14 @@ class wp_php_flickr {
                 //Caches the unparsed XML of a request.
                 $reqhash = md5(serialize($request));
                 if ($this->cache == 'db') {
+                		global $wpdb;
                         //$this->cache_db->query("DELETE FROM $this->cache_table WHERE request = '$reqhash'");
-                        if ($this->cache_db->getOne("SELECT COUNT(*) FROM {$this->cache_table} WHERE request = '$reqhash'")) {
+                        if ($wpdb->get_var("SELECT COUNT(*) FROM {$this->cache_table} WHERE request = '$reqhash'")) {
                                 $sql = "UPDATE " . $this->cache_table . " SET response = ?, expiration = ? WHERE request = ?";
-                                $this->cache_db->query($sql, array($response, strftime("%Y-%m-%d %H:%M:%S"), $reqhash));
+                                $wpdb->query($sql, array($response, strftime("%Y-%m-%d %H:%M:%S"), $reqhash));
                         } else {
                                 $sql = "INSERT INTO " . $this->cache_table . " (request, response, expiration) VALUES ('$reqhash', '" . str_replace("'", "''", $response) . "', '" . strftime("%Y-%m-%d %H:%M:%S") . "')";
-                                $this->cache_db->query($sql);
+                                $wpdb->query($sql);
                         }
                 } elseif ($this->cache == "fs") {
                         $file = $this->cache_dir . "/" . $reqhash . ".cache";

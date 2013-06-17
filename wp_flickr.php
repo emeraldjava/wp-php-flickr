@@ -80,6 +80,7 @@ class wp_flickr
 		);
 		// initialise the php flickr		
 		$this->wp_php_flickr = new wp_php_flickr(get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
+		$this->wp_php_flickr->enableCache(wp_php_flickr::DB,'wp_flickr_cache');
 		
 		// load the default users photo's
 		$person = $this->wp_php_flickr->people_findByUsername(get_option(wp_flickr::WP_FLICKR_USERNAME));
