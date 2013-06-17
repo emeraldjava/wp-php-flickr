@@ -49,9 +49,9 @@ class wp_php_flickr {
          * of your table.
          */
         var $max_cache_rows = 1000;
-
+        
         function wp_php_flickr ($api_key, $secret = NULL, $die_on_error = false) {
-                //The API Key must be set before any calls can be made.  You can
+        	    //The API Key must be set before any calls can be made.  You can
                 //get your own at http://www.flickr.com/services/api/misc.api_keys.html
                 $this->api_key = $api_key;
                 $this->secret = $secret;
@@ -207,6 +207,7 @@ class wp_php_flickr {
                         	} else {
                         		$this->error_code = $this->response->get_error_code();
                         		$this->error_msg = $this->response->get_error_message();
+                        		die("There has been a problem sending your command to the server.".PHP_EOL.$this->response->get_error_message());
                         	} 
                         }
                 }
