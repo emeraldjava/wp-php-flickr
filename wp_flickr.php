@@ -14,7 +14,7 @@
  * Plugin Name:       wp_flickr
  * Plugin URI:        https://github.com/emeraldjava/wp_flickr
  * Description:       PHP Flickr for Wordpress
- * Version:           0.0.2
+ * Version:           0.0.3
  * Author:            emeraldjava
  * Author URI:        
  * Text Domain:       wp_flickr

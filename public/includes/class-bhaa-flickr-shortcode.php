@@ -28,11 +28,11 @@ class bhaa_flickr_shortcode{
 				'bar' => 'something else',
 			), $atts )
 		);
-		
 		return sprintf('%s plugin settings : %s %s',
-				wp_flickr::get_instance()->get_plugin_slug(),
-				get_option(wp_flickr::WP_FLICKR_API_KEY),
-				get_option(wp_flickr::WP_FLICKR_SECRET));	
+			wp_flickr::get_instance()->get_plugin_slug(),
+			//get_plugin_data('wp_flickr'),
+			get_option(wp_flickr::WP_FLICKR_API_KEY),
+			get_option(wp_flickr::WP_FLICKR_SECRET));	
 	}
 		
 	function wp_flickr_list_albumx($attrs) {
