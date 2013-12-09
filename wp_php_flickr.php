@@ -25,7 +25,7 @@ class wp_php_flickr {
         var $REST = 'http://api.flickr.com/services/rest/';
         var $Upload = 'http://api.flickr.com/services/upload/';
         var $Replace = 'http://api.flickr.com/services/replace/';
-        var $req;
+        var $wpRequest;
         var $response;
         var $parsed_response;
         var $cache = false;
@@ -67,8 +67,8 @@ class wp_php_flickr {
                 $this->php_version = explode(".", $this->php_version[0]);
 
                 //All calls to the API are done via the POST method using the PEAR::HTTP_Request package.
-                $this->req = & new WP_Http();
-                //$this->req->setMethod(HTTP_REQUEST_METHOD_POST);
+                $this->wpRequest = & new WP_Http();
+                //$this->wpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         }
 
         function enableCache ($type, $connection, $cache_expire = 600, $table = 'wp_flickr_cache') {
@@ -209,7 +209,7 @@ class wp_php_flickr {
                         $args = array_merge($args, $headers);
 
                         //Sends a request to Flickr's REST endpoint via POST.
-                        $this->response = $this->req->request($this->REST,$args);
+                        $this->response = $this->wpRequest->request($this->REST,$args);
                         if (!is_wp_error($this->response)) {
 	                          $this->cache($args, $this->response);
                         } else {
