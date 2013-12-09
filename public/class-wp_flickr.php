@@ -74,7 +74,7 @@ class wp_flickr {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 		// Activate plugin when new blog is added
-		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
+		//add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
@@ -83,6 +83,7 @@ class wp_flickr {
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
+		add_shortcode('wp_flickr',array($this,'wp_flickr_list_album'));
 		//add_action( 'TODO', array( $this, 'action_method_name' ) );
 		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 
@@ -310,4 +311,21 @@ class wp_flickr {
 		// TODO: Define your filter hook callback here
 	}
 
+	
+	public function wp_flickr_list_album($attrs) {
+		extract(
+			shortcode_atts( array(
+				'foo' => 'something',
+				'bar' => 'something else',
+			), $atts )
+		);
+		// initialise the php flickr
+		//$this->wp_php_flickr = new wp_php_flickr(get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
+		//$this->wp_php_flickr->enableCache(wp_php_flickr::DB,'wp_flickr_cache');
+		
+		return sprintf('%s plugin settings : %s %s',
+			$this->get_plugin_slug(),
+			get_option(wp_flickr::WP_FLICKR_API_KEY),
+			get_option(wp_flickr::WP_FLICKR_SECRET));
+	}
 }

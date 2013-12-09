@@ -13,3 +13,6 @@ wp-content/backups/
 sitemap.xml
 sitemap.xml.gz
 .settings/*
+.project
+.buildpath
+build.xml
