@@ -57,6 +57,8 @@ class wp_flickr {
 	 */
 	protected static $instance = null;
 	
+	protected static $bhaa_flickr_shortcode = null;
+	
 	const WP_FLICKR_USERNAME = 'wp_flickr_username';
 	const WP_FLICKR_USER_ID = 'wp_flickr_user_id';
 	const WP_FLICKR_API_KEY = 'wp_flickr_api_key';
@@ -70,6 +72,9 @@ class wp_flickr {
 	 */
 	private function __construct() {
 
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/class-bhaa-flickr-shortcode.php' );
+		$bhaa_flickr_shortcode = bhaa_flickr_shortcode::get_instance();
+		
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -83,10 +88,9 @@ class wp_flickr {
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
-		add_shortcode('wp_flickr',array($this,'wp_flickr_list_album'));
+		add_shortcode('wp_flickr',array($bhaa_flickr_shortcode,'wp_flickr_list_album'));
 		//add_action( 'TODO', array( $this, 'action_method_name' ) );
 		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
-
 	}
 
 	/**
@@ -309,23 +313,5 @@ class wp_flickr {
 	 */
 	public function filter_method_name() {
 		// TODO: Define your filter hook callback here
-	}
-
-	
-	public function wp_flickr_list_album($attrs) {
-		extract(
-			shortcode_atts( array(
-				'foo' => 'something',
-				'bar' => 'something else',
-			), $atts )
-		);
-		// initialise the php flickr
-		//$this->wp_php_flickr = new wp_php_flickr(get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
-		//$this->wp_php_flickr->enableCache(wp_php_flickr::DB,'wp_flickr_cache');
-		
-		return sprintf('%s plugin settings : %s %s',
-			$this->get_plugin_slug(),
-			get_option(wp_flickr::WP_FLICKR_API_KEY),
-			get_option(wp_flickr::WP_FLICKR_SECRET));
 	}
 }

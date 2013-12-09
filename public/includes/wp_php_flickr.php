@@ -79,10 +79,10 @@ class wp_php_flickr {
                 // When using file system, caching, the $connection is the folder that the web server has write
                 // access to. Use absolute paths for best results.  Relative paths may have unexpected behavior
                 // when you include this.  They'll usually work, you'll just want to test them.
-                echo 'enableCache '.$type.' '.$connection.' '.wp_php_flickr::DB;
                 
                 if ($type == wp_php_flickr::DB) {
-                        global $wpdb;
+                		
+                	 	global $wpdb;
                         $this->cache = wp_php_flickr::DB;
                         $this->cache_table = $connection;
 
@@ -90,27 +90,29 @@ class wp_php_flickr {
                          * If high performance is crucial, you can easily comment
                          * out this query once you've created your database table.
                          */
-                        if ($wpdb->get_var("SHOW TABLES LIKE '".$this->cache_table."'") != $this->cache_table)
-                        {
-                        	$create_sql = 'CREATE TABLE IF NOT EXISTS '.$this->cache_table.' (
+                        if ($wpdb->get_var("SHOW TABLES LIKE '".$table."'") != $table) {
+                        	//error_log('enableCache '.$type.' '.$connection.' '.wp_php_flickr::DB);
+                        	$create_sql = 'CREATE TABLE IF NOT EXISTS '.$table.' (
                         			request CHAR( 35 ) NOT NULL,
                         			response MEDIUMTEXT NOT NULL,
                         			expiration DATETIME NOT NULL,
                         			INDEX ( request )
                         	) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
+                        	error_log('Calling SQL : '.$create_sql);
                         	//error_log($create_sql);
                         	// We use the dbDelta method given by WP!
                         	require_once ABSPATH.'wp-admin/includes/upgrade.php';
                         	dbDelta($create_sql);
-                        	error_log("created table ".$this->cache_table);
+                        	error_log("created table ".$table);
+                        } 
+                        
+                        if ($wpdb->get_var('SELECT COUNT(*) FROM '.$table) > $this->max_cache_rows) {
+                            $wpdb->query('DELETE FROM '.$table.' WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)');
+                            $wpdb->query('OPTIMIZE TABLE '.$this->cache_table);
                         }
-
-                        if ($wpdb->get_var('SELECT COUNT(*) FROM '.$this->cache_table) > $this->max_cache_rows) {
-	                            $wpdb->query("DELETE FROM $this->cache_table WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)");
-                                $wpdb->query('OPTIMIZE TABLE '.$this->cache_table);
-                        }
-
-
+                        $this->cache='db';
+                        $this->cache_table = $table;
+                        
                 } elseif ($type == wp_php_flickr::FS) {
                         $this->cache = wp_php_flickr::FS;
                         $connection = realpath($connection);
@@ -124,7 +126,6 @@ class wp_php_flickr {
                         }
                 }
                 $this->cache_expire = $cache_expire;
-                echo 'enableCache '. $this->cache_expire;
         }
 
         function getCached ($request) {
