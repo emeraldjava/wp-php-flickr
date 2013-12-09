@@ -56,6 +56,11 @@ class wp_flickr {
 	 * @var      object
 	 */
 	protected static $instance = null;
+	
+	const WP_FLICKR_USERNAME = 'wp_flickr_username';
+	const WP_FLICKR_USER_ID = 'wp_flickr_user_id';
+	const WP_FLICKR_API_KEY = 'wp_flickr_api_key';
+	const WP_FLICKR_SECRET = 'wp_flickr_secret';
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
@@ -78,8 +83,8 @@ class wp_flickr {
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
-		add_action( 'TODO', array( $this, 'action_method_name' ) );
-		add_filter( 'TODO', array( $this, 'filter_method_name' ) );
+		//add_action( 'TODO', array( $this, 'action_method_name' ) );
+		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 
 	}
 

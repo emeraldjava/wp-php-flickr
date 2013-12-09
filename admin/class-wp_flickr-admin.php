@@ -40,7 +40,7 @@ class wp_flickr_Admin {
 	 * @var      string
 	 */
 	protected $plugin_screen_hook_suffix = null;
-
+	
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -58,14 +58,6 @@ class wp_flickr_Admin {
 			return;
 		} */
 
-		/*
-		 * Call $plugin_slug from public plugin class.
-		 *
-		 * TODO:
-		 *
-		 * - Rename "Plugin_Name" to the name of your initial plugin class
-		 *
-		 */
 		$plugin = wp_flickr::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
@@ -86,9 +78,8 @@ class wp_flickr_Admin {
 		 * Read more about actions and filters:
 		 * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
-		add_action( 'TODO', array( $this, 'action_method_name' ) );
-		add_filter( 'TODO', array( $this, 'filter_method_name' ) );
-
+		//add_action( 'TODO', array( $this, 'action_method_name' ) );
+		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 	}
 
 	/**
@@ -100,11 +91,6 @@ class wp_flickr_Admin {
 	 */
 	public static function get_instance() {
 
-		/*
-		 * TODO :
-		 *
-		 * - Decomment following lines if the admin class should only be available for super admins
-		 */
 		/* if( ! is_super_admin() ) {
 			return;
 		} */
@@ -186,6 +172,12 @@ class wp_flickr_Admin {
 		 * - Change 'manage_options' to the capability you see fit
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
+		
+		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_USERNAME);
+		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_USER_ID);
+		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_API_KEY);
+		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_SECRET);
+		
 		$this->plugin_screen_hook_suffix = add_options_page(
 			__( 'wp_flickr Settings', $this->plugin_slug ),
 			__( 'wp_flickr', $this->plugin_slug ),
