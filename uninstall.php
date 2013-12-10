@@ -5,7 +5,7 @@
  * @package   wp_flickr
  * @author    emeraldjava <paul.t.oconnell@gmail.com>
  * @license   GPL-2.0+
- * @link      https://github.com/emeraldjava/wp_flickr
+ * @link      https://github.com/emeraldjava/wp-php-flickr
  * @copyright 2013 emeraldjava
  */
 
