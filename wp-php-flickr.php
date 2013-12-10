@@ -1,10 +1,6 @@
 <?php
 /**
- * wp_flickr
- *
- * PHP Flickr for Wordpress
- *
- * @package   wp_flickr
+ * @package   Wp_Php_Flickr
  * @author    emeraldjava <paul.t.oconnell@gmail.com>
  * @license   GPL-2.0+
  * @link      https://github.com/emeraldjava/wp_flickr
@@ -14,7 +10,7 @@
  * Plugin Name:       PHP Flickr For Wordpress
  * Plugin URI:        https://github.com/emeraldjava/wp_flickr
  * Description:       PHP Flickr for Wordpress
- * Version:           0.0.5
+ * Version:           0.0.6
  * Author:            emeraldjava
  * Author URI:        https://github.com/emeraldjava
  * Text Domain:       wp_flickr
@@ -34,16 +30,16 @@ if ( ! defined( 'WPINC' ) ) {
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp_flickr.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-php-flickr.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'wp_flickr', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'wp_flickr', 'deactivate' ) );
+register_activation_hook( __FILE__, array( 'Wp_Php_Flickr', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'Wp_Php_Flickr', 'deactivate' ) );
 
-add_action( 'plugins_loaded', array( 'wp_flickr', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'Wp_Php_Flickr', 'get_instance' ) );
 
 /*----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
@@ -67,7 +63,6 @@ add_action( 'plugins_loaded', array( 'wp_flickr', 'get_instance' ) );
  */
 if ( is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp_flickr-admin.php' );
-	add_action( 'plugins_loaded', array( 'wp_flickr_Admin', 'get_instance' ) );
-
+	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp-php-flickr-admin.php' );
+	add_action( 'plugins_loaded', array( 'Wp_Php_Flickr_Admin', 'get_instance' ) );
 }

@@ -1,11 +1,11 @@
 <?php
 
-class bhaa_flickr_shortcode{
+class Flickr_Shortcode {
 	
 	// the singleton
 	protected static $instance = null;
 	
-	private $wp_php_flickr = null;
+	private $wp_php_flickr_core = null;
 	
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
@@ -16,9 +16,10 @@ class bhaa_flickr_shortcode{
 	}
 	
 	private function __construct() {
-		require_once( plugin_dir_path( __FILE__ ) . '//wp_php_flickr.php' );
-		$this->wp_php_flickr = new wp_php_flickr(get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
-		$this->wp_php_flickr->enableCache(wp_php_flickr::DB,'wp_flickr_cache');
+		require_once( plugin_dir_path( __FILE__ ) . '//wp-php-flickr-core.php' );
+		$this->wp_php_flickr_core = new Wp_Php_Flickr_Core(
+			get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
+		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
 	function wp_flickr_list_album($attrs) {

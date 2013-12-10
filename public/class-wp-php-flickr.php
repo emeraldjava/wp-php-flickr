@@ -21,7 +21,7 @@
  * @package wp_flickr
  * @author  emeraldjava <paul.t.oconnell@gmail.com>
  */
-class wp_flickr {
+class Wp_Php_Flickr {
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -30,7 +30,7 @@ class wp_flickr {
 	 *
 	 * @var     string
 	 */
-	const VERSION = '0.0.1';
+	const VERSION = '0.0.6';
 
 	/**
 	 * TODO - Rename "plugin-name" to the name your your plugin
@@ -46,7 +46,7 @@ class wp_flickr {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'wp_flickr';
+	protected $plugin_slug = 'wp_php_flickr';
 
 	/**
 	 * Instance of this class.
@@ -112,12 +112,10 @@ class wp_flickr {
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
 		}
-
 		return self::$instance;
 	}
 
@@ -132,30 +130,21 @@ class wp_flickr {
 	 *                                       activated on an individual blog.
 	 */
 	public static function activate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
 			if ( $network_wide  ) {
-
 				// Get all blog ids
 				$blog_ids = self::get_blog_ids();
-
 				foreach ( $blog_ids as $blog_id ) {
-
 					switch_to_blog( $blog_id );
 					self::single_activate();
 				}
-
 				restore_current_blog();
-
 			} else {
 				self::single_activate();
 			}
-
 		} else {
 			self::single_activate();
 		}
-
 	}
 
 	/**
@@ -169,31 +158,21 @@ class wp_flickr {
 	 *                                       deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
 			if ( $network_wide ) {
-
 				// Get all blog ids
 				$blog_ids = self::get_blog_ids();
-
 				foreach ( $blog_ids as $blog_id ) {
-
 					switch_to_blog( $blog_id );
 					self::single_deactivate();
-
 				}
-
 				restore_current_blog();
-
 			} else {
 				self::single_deactivate();
 			}
-
 		} else {
 			self::single_deactivate();
 		}
-
 	}
 
 	/**
@@ -204,15 +183,12 @@ class wp_flickr {
 	 * @param    int    $blog_id    ID of the new blog.
 	 */
 	public function activate_new_site( $blog_id ) {
-
 		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
 			return;
 		}
-
 		switch_to_blog( $blog_id );
 		self::single_activate();
 		restore_current_blog();
-
 	}
 
 	/**
@@ -226,16 +202,12 @@ class wp_flickr {
 	 * @return   array|false    The blog ids, false if no matches.
 	 */
 	private static function get_blog_ids() {
-
 		global $wpdb;
-
 		// get an array of blog ids
 		$sql = "SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0'
 			AND deleted = '0'";
-
 		return $wpdb->get_col( $sql );
-
 	}
 
 	/**
@@ -262,13 +234,11 @@ class wp_flickr {
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
-
 		$domain = $this->plugin_slug;
 		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . 'languages/' );
-
 	}
 
 	/**

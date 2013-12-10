@@ -21,7 +21,7 @@
  * @package wp_flickr_Admin
  * @author  emeraldjava <paul.t.oconnell@gmail.com>
  */
-class wp_flickr_Admin {
+class Wp_Php_Flickr_Admin {
 
 	/**
 	 * Instance of this class.
@@ -58,7 +58,7 @@ class wp_flickr_Admin {
 			return;
 		} */
 
-		$plugin = wp_flickr::get_instance();
+		$plugin = Wp_Php_Flickr::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		// Load admin style sheet and JavaScript.
@@ -115,16 +115,13 @@ class wp_flickr_Admin {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_styles() {
-
 		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
 			return;
 		}
-
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array(), wp_flickr::VERSION );
 		}
-
 	}
 
 	/**
@@ -157,7 +154,6 @@ class wp_flickr_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-
 		/*
 		 * Add a settings page for this plugin to the Settings menu.
 		 *
@@ -185,7 +181,6 @@ class wp_flickr_Admin {
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
 		);
-
 	}
 
 	/**
@@ -203,14 +198,12 @@ class wp_flickr_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
 				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings', $this->plugin_slug ) . '</a>'
 			),
 			$links
 		);
-
 	}
 
 	/**
@@ -238,5 +231,4 @@ class wp_flickr_Admin {
 	public function filter_method_name() {
 		// TODO: Define your filter hook callback here
 	}
-
 }

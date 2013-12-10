@@ -18,7 +18,7 @@ if( !class_exists( 'WP_Http' ) ) {
 	require_once( WP_INSTALL_DIR.'\wp-includes\class-http.php');
 }
 
-class wp_php_flickr {
+class Wp_Php_Flickr_Core {
 	
         var $api_key;
         var $secret;
@@ -54,7 +54,7 @@ class wp_php_flickr {
          */
         var $max_cache_rows = 1000;
         
-        function wp_php_flickr ($api_key, $secret = NULL, $die_on_error = false) {
+        function Wp_Php_Flickr_Core ($api_key, $secret = NULL, $die_on_error = false) {
         	    //The API Key must be set before any calls can be made.  You can
                 //get your own at http://www.flickr.com/services/api/misc.api_keys.html
                 $this->api_key = $api_key;
@@ -71,6 +71,13 @@ class wp_php_flickr {
                 //$this->wpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         }
 
+        /**
+         * @TODO Make the typpe, cache_expire and table as settings
+         * @param unknown $type
+         * @param unknown $connection
+         * @param number $cache_expire
+         * @param string $table
+         */
         function enableCache ($type, $connection, $cache_expire = 600, $table = 'wp_flickr_cache') {
                 // Turns on caching.  $type must be either "db" (for database caching) or "fs" (for filesystem).
                 // When using db, $connection must be a PEAR::DB connection string. Example:
