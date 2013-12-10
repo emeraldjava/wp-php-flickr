@@ -57,7 +57,7 @@ class Wp_Php_Flickr {
 	 */
 	protected static $instance = null;
 	
-	protected static $bhaa_flickr_shortcode = null;
+	protected static $flickr_shortcode = null;
 	
 	const WP_FLICKR_USERNAME = 'wp_flickr_username';
 	const WP_FLICKR_USER_ID = 'wp_flickr_user_id';
@@ -72,8 +72,8 @@ class Wp_Php_Flickr {
 	 */
 	private function __construct() {
 
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/class-bhaa-flickr-shortcode.php' );
-		$bhaa_flickr_shortcode = bhaa_flickr_shortcode::get_instance();
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/class-flickr-shortcode.php' );
+		$flickr_shortcode = Flickr_Shortcode::get_instance();
 		
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -88,7 +88,7 @@ class Wp_Php_Flickr {
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
-		add_shortcode('wp_flickr',array($bhaa_flickr_shortcode,'wp_flickr_list_album'));
+		add_shortcode('wp_flickr',array($flickr_shortcode,'wp_flickr_list_album'));
 		//add_action( 'TODO', array( $this, 'action_method_name' ) );
 		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 	}
