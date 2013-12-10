@@ -87,10 +87,10 @@ class Wp_Php_Flickr_Core {
                 // access to. Use absolute paths for best results.  Relative paths may have unexpected behavior
                 // when you include this.  They'll usually work, you'll just want to test them.
                 
-                if ($type == wp_php_flickr::DB) {
+                if ($type == Wp_Php_Flickr_Core::DB) {
                 		
                 	 	global $wpdb;
-                        $this->cache = wp_php_flickr::DB;
+                        $this->cache = Wp_Php_Flickr_Core::DB;
                         $this->cache_table = $connection;
 
                         /*
@@ -120,8 +120,8 @@ class Wp_Php_Flickr_Core {
                         $this->cache='db';
                         $this->cache_table = $table;
                         
-                } elseif ($type == wp_php_flickr::FS) {
-                        $this->cache = wp_php_flickr::FS;
+                } elseif ($type == Wp_Php_Flickr_Core::FS) {
+                        $this->cache = Wp_Php_Flickr_Core::FS;
                         $connection = realpath($connection);
                         $this->cache_dir = $connection;
                         if ($dir = opendir($this->cache_dir)) {
@@ -140,7 +140,7 @@ class Wp_Php_Flickr_Core {
                 //If there is no cache result, it returns a value of false. If it finds one,
                 //it returns the unparsed XML.
                 $reqhash = md5(serialize($request));
-                if ($this->cache == wp_php_flickr::DB) {
+                if ($this->cache == Wp_Php_Flickr_Core::DB) {
  		               	global $wpdb;
                         $result = $wpdb->get_var('SELECT response FROM '.$this->cache_table.' WHERE request = "'.$reqhash.'" AND DATE_SUB(NOW(), INTERVAL '.(int) $this->cache_expire . ' SECOND) < expiration');// $reqhash);
                         if (!empty($result)) {

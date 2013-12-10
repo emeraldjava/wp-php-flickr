@@ -18,8 +18,8 @@ class Flickr_Shortcode {
 	private function __construct() {
 		require_once( plugin_dir_path( __FILE__ ) . '//wp-php-flickr-core.php' );
 		$this->wp_php_flickr_core = new Wp_Php_Flickr_Core(
-			get_option(wp_flickr::WP_FLICKR_API_KEY),get_option(wp_flickr::WP_FLICKR_SECRET));
-		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr::DB,'wp_flickr_cache'); // TODO make table name a setting
+			get_option(Wp_Php_Flickr::WP_FLICKR_API_KEY),get_option(Wp_Php_Flickr::WP_FLICKR_SECRET));
+		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
 	function wp_flickr_list_album($attrs) {
@@ -45,7 +45,7 @@ class Flickr_Shortcode {
 		);
 	
 		// load the default users photo's
-		$person = $this->wp_php_flickr->people_findByUsername(get_option(wp_flickr::WP_FLICKR_USERNAME));
+		$person = $this->wp_php_flickr->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
 		//$person = $wp_php_flickr->people_findByUsername('34896940@N06');
 		//$person = $wp_php_flickr->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
 		// $person = $wp_php_flickr->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));

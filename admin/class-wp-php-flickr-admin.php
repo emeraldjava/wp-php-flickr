@@ -136,16 +136,13 @@ class Wp_Php_Flickr_Admin {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
-
 		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
 			return;
 		}
-
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery' ), wp_flickr::VERSION );
 		}
-
 	}
 
 	/**
@@ -169,10 +166,10 @@ class Wp_Php_Flickr_Admin {
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		
-		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_USERNAME);
-		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_USER_ID);
-		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_API_KEY);
-		register_setting($this->plugin_slug,wp_flickr::WP_FLICKR_SECRET);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USERNAME);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USER_ID);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_API_KEY);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_SECRET);
 		
 		$this->plugin_screen_hook_suffix = add_options_page(
 			__( 'wp_flickr Settings', $this->plugin_slug ),
