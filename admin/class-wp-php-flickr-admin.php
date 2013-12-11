@@ -66,11 +66,11 @@ class Wp_Php_Flickr_Admin {
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-
+		add_action( 'admin_init', array( $this, 'register_settings'));
+		
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
-		error_log('$plugin_basename '.$plugin_basename);
-		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
+		add_filter('plugin_action_links', array( $this, 'add_action_links' ) );
 
 		/*
 		 * Define custom functionality.
@@ -162,12 +162,6 @@ class Wp_Php_Flickr_Admin {
 		 * - Change 'manage_options' to the capability you see fit
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
-		
-		//register_setting(Wp_Php_Flickr::WP_FLICKR_USERNAME,Wp_Php_Flickr::WP_FLICKR_USERNAME);
-		//register_setting(Wp_Php_Flickr::WP_FLICKR_USER_ID,Wp_Php_Flickr::WP_FLICKR_USER_ID);
-		//register_setting(Wp_Php_Flickr::WP_FLICKR_API_KEY,Wp_Php_Flickr::WP_FLICKR_API_KEY);
-		//register_setting(Wp_Php_Flickr::WP_FLICKR_SECRET,Wp_Php_Flickr::WP_FLICKR_SECRET);
-		
 		$this->plugin_screen_hook_suffix = add_options_page(
 			__( 'Wordpress PHP Flickr', $this->plugin_slug ),
 			__( 'Wp Php Flickr', $this->plugin_slug ),
@@ -175,6 +169,13 @@ class Wp_Php_Flickr_Admin {
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )
 		);
+	}
+	
+	public function register_settings() {
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USERNAME);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USER_ID);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_API_KEY);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_SECRET);
 	}
 
 	/**

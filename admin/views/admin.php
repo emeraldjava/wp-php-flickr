@@ -18,8 +18,8 @@
 
 	<!-- TODO: Provide markup for your options page here. -->
    	<form method="post" action="options.php">
-   	    <?php settings_fields( 'wp-php-flickr' ); ?>
-   	    <?php do_settings_sections( 'wp-php-flickr' ); ?>
+   	    <?php settings_fields( 'wp_php_flickr' ); ?>
+   	    <?php do_settings_sections( 'wp_php_flickr' ); ?>
        	    <table class="form-table">
        	        <tr valign="top">
        	        <th scope="row">wp_php_flickr_username</th>

@@ -59,10 +59,10 @@ class Wp_Php_Flickr {
 	
 	protected static $flickr_shortcode = null;
 	
-	const WP_FLICKR_USERNAME = 'wp_flickr_username';
-	const WP_FLICKR_USER_ID = 'wp_flickr_user_id';
-	const WP_FLICKR_API_KEY = 'wp_flickr_api_key';
-	const WP_FLICKR_SECRET = 'wp_flickr_secret';
+	const WP_FLICKR_USERNAME = 'wp_php_flickr_username';
+	const WP_FLICKR_USER_ID = 'wp_php_flickr_user_id';
+	const WP_FLICKR_API_KEY = 'wp_php_flickr_api_key';
+	const WP_FLICKR_SECRET = 'wp_php_flickr_secret';
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
