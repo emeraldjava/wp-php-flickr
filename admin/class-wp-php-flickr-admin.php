@@ -61,14 +61,15 @@ class Wp_Php_Flickr_Admin {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		// Load admin style sheet and JavaScript.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+		//add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_slug . '.php' );
+		error_log('$plugin_basename '.$plugin_basename);
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
 
 		/*
@@ -89,16 +90,13 @@ class Wp_Php_Flickr_Admin {
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		/* if( ! is_super_admin() ) {
 			return;
 		} */
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
 		}
-
 		return self::$instance;
 	}
 
@@ -165,14 +163,14 @@ class Wp_Php_Flickr_Admin {
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		
-		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USERNAME);
-		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USER_ID);
-		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_API_KEY);
-		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_SECRET);
+		//register_setting(Wp_Php_Flickr::WP_FLICKR_USERNAME,Wp_Php_Flickr::WP_FLICKR_USERNAME);
+		//register_setting(Wp_Php_Flickr::WP_FLICKR_USER_ID,Wp_Php_Flickr::WP_FLICKR_USER_ID);
+		//register_setting(Wp_Php_Flickr::WP_FLICKR_API_KEY,Wp_Php_Flickr::WP_FLICKR_API_KEY);
+		//register_setting(Wp_Php_Flickr::WP_FLICKR_SECRET,Wp_Php_Flickr::WP_FLICKR_SECRET);
 		
 		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'wp_flickr Settings', $this->plugin_slug ),
-			__( 'wp_flickr', $this->plugin_slug ),
+			__( 'Wordpress PHP Flickr', $this->plugin_slug ),
+			__( 'Wp Php Flickr', $this->plugin_slug ),
 			'manage_options',
 			$this->plugin_slug,
 			array( $this, 'display_plugin_admin_page' )

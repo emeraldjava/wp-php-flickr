@@ -23,7 +23,7 @@
        	    <table class="form-table">
        	        <tr valign="top">
        	        <th scope="row">wp_php_flickr_username</th>
-       	        <td><input type="text" name="wp_php_flickr_username" value="<?php echo get_option('wp-php-flickr_username'); ?>" /></td>
+       	        <td><input type="text" name="wp_php_flickr_username" value="<?php echo get_option('wp_php_flickr_username'); ?>" /></td>
        	        </tr>
        	        <tr valign="top">
        	        <th scope="row">wp_php_flickr_user_id</th>
