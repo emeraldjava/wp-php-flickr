@@ -22,7 +22,7 @@ class Flickr_Shortcode {
 		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
-	function wp_flickr_list_album($attrs) {
+	function wp_flickr_list_albumx($attrs) {
 		extract(
 			shortcode_atts( array(
 				'foo' => 'something',
@@ -36,7 +36,7 @@ class Flickr_Shortcode {
 			get_option(wp_flickr::WP_FLICKR_SECRET));	
 	}
 		
-	function wp_flickr_list_albumx($attrs) {
+	function wp_flickr_list_album($attrs) {
 		extract(
 			shortcode_atts( array(
 			'foo' => 'something',
