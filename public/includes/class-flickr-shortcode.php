@@ -45,12 +45,12 @@ class Flickr_Shortcode {
 		);
 	
 		// load the default users photo's
-		$person = $this->wp_php_flickr->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
+		$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
 		//$person = $wp_php_flickr->people_findByUsername('34896940@N06');
 		//$person = $wp_php_flickr->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
 		// $person = $wp_php_flickr->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
 	
-		$photos = $this->wp_php_flickr->people_getPublicPhotos($person['id'], NULL, NULL, 14);
+		$photos = $this->wp_php_flickr_core->people_getPublicPhotos($person['id'], NULL, NULL, 14);
 		//var_dump($photos);
 		error_log('photos '.$photos);
 	
@@ -59,7 +59,7 @@ class Flickr_Shortcode {
 	
 			//error_log($photo);
 			//echo '<hr/>';
-			echo '<a href="'.$this->wp_php_flickr->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]" >';
+			echo '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]" >';
 			echo "<img border='0' alt='$photo[title]' src=".$this->wp_php_flickr->buildPhotoURL($photo, "thumbnail") . ">";
 			// http://www.flickr.com/photos/34896940@N06/8542579566/
 			//echo "<img border='0' alt='$photo[title]' src=".$wp_php_flickr->buildPhotoURL($photo, "Square") . ">";
