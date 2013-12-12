@@ -235,8 +235,8 @@ class Wp_Php_Flickr_Core {
                  * and you're concerned about time.  This will, however, change the structure of
                  * the result, so be sure that you look at the results.
                  */
-                //$this->parsed_response = unserialize($this->response);
-                $this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
+                $this->parsed_response = unserialize($this->response);
+                //$this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
                 if ($this->parsed_response['stat'] == 'fail') {
                         if ($this->die_on_error) 
                         	die("The Flickr API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
