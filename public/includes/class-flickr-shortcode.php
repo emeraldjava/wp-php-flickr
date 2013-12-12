@@ -52,24 +52,26 @@ class Flickr_Shortcode {
 	
 		$photos = $this->wp_php_flickr_core->people_getPublicPhotos($person['id'], NULL, NULL, 14);
 		//var_dump($photos);
-		error_log('photos '.$photos);
+		error_log('$photos '.print_r($photos,true));
 	
 		// Loop through the photos and output the html
+		$list = '';
 		foreach ((array)$photos['photos']['photo'] as $photo) {
 	
 			//error_log($photo);
 			//echo '<hr/>';
-			echo '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]" >';
-			echo "<img border='0' alt='$photo[title]' src=".$this->wp_php_flickr->buildPhotoURL($photo, "thumbnail") . ">";
+			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]" >';
+			$list .= '<img border="0" alt="'.$photo[title].'" src="'.$this->wp_php_flickr->buildPhotoURL($photo, "thumbnail") .'">';
 			// http://www.flickr.com/photos/34896940@N06/8542579566/
 			//echo "<img border='0' alt='$photo[title]' src=".$wp_php_flickr->buildPhotoURL($photo, "Square") . ">";
-			echo "</a>";
-					$i++;
-					// If it reaches the sixth photo, insert a line break
-					if ($i % 6 == 0) {
-					echo "<br>\n";
-					}
+			$list .= '</a>';
+			$i++;
+			// If it reaches the sixth photo, insert a line break
+			if ($i % 6 == 0) {
+				$list .= '<br>\n';
+			}
 		}
+		error_log('$list '.$list);
 		//var_dump($list);
 		return $list;
 	}
