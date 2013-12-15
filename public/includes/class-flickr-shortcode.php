@@ -19,7 +19,7 @@ class Flickr_Shortcode {
 		require_once( plugin_dir_path( __FILE__ ) . '//wp-php-flickr-core.php' );
 		$this->wp_php_flickr_core = new Wp_Php_Flickr_Core(
 			get_option(Wp_Php_Flickr::WP_FLICKR_API_KEY),get_option(Wp_Php_Flickr::WP_FLICKR_SECRET));
-		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
+		//$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
 	function wp_flickr_list_albumx($attrs) {
@@ -41,21 +41,23 @@ class Flickr_Shortcode {
 			shortcode_atts( array(
 			'foo' => 'something',
 			'bar' => 'something else',
-			), $atts )
+			), $attrs )
 		);
 	
 		// load the default users photo's
-		$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
-		//$person = $wp_php_flickr->people_findByUsername('34896940@N06');
-		//$person = $wp_php_flickr->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
-		// $person = $wp_php_flickr->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
+		//$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
+		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//34896940@N06');
+		//error_log('person '.$person);
+		//var_dump($person,true);
+		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
+		// $person = $this->wp_php_flickr_core->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
 	
-		$photos = $this->wp_php_flickr_core->people_getPublicPhotos($person['id'], NULL, NULL, 14);
-		//var_dump($photos);
+		$photos = $this->wp_php_flickr_core->people_getPublicPhotos('34896940@N06', NULL, NULL, 14, 10);
+		var_dump($photos);
 		error_log('$photos '.print_r($photos,true));
 	
 		// Loop through the photos and output the html
-		$list = '';
+		$list = '<div>Flickr</div>';
 		foreach ((array)$photos['photos']['photo'] as $photo) {
 	
 			//error_log($photo);

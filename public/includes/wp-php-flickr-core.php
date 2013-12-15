@@ -67,7 +67,7 @@ class Wp_Php_Flickr_Core {
                 $this->php_version = explode(".", $this->php_version[0]);
 
                 //All calls to the API are done via the POST method using the PEAR::HTTP_Request package.
-                $this->wpRequest = & new WP_Http();
+                //$this->wpRequest = & new WP_Http();
                 //$this->wpRequest->setMethod(HTTP_REQUEST_METHOD_POST);
         }
 
@@ -114,7 +114,7 @@ class Wp_Php_Flickr_Core {
                         } 
                         
                         if ($wpdb->get_var('SELECT COUNT(*) FROM '.$table) > $this->max_cache_rows) {
-                            $wpdb->query('DELETE FROM '.$table.' WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)');
+                            $wpdb->query('DELETE FROM '.$table.' WHERE expiration < DATE_SUB(NOW(), INTERVAL '.$cache_expire.' second)');
                             $wpdb->query('OPTIMIZE TABLE '.$this->cache_table);
                         }
                         $this->cache='db';
@@ -188,14 +188,16 @@ class Wp_Php_Flickr_Core {
                 }
 
                 //Process arguments, including method and login data.
-                $args = array_merge(array("method" => $command, "format" => "php_serial", "api_key" => $this->api_key), $args);
+                $args = array_merge(
+                    array("method" => $command, "format" => "php_serial", "api_key" => $this->api_key),
+                     $args);
                 if (!empty($this->token)) {
                         $args = array_merge($args, array("auth_token" => $this->token));
                 } elseif (!empty($_SESSION['phpFlickr_auth_token'])) {
                         $args = array_merge($args, array("auth_token" => $_SESSION['phpFlickr_auth_token']));
                 }
                 ksort($args);
-                $auth_sig = "";
+                $auth_sig = '';
                 
                 // http request arguments
                 $body = array();
@@ -216,8 +218,11 @@ class Wp_Php_Flickr_Core {
                         $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
                         $args = array_merge($args, $headers);
 
+                        error_log('http args '.$this->REST.' '.print_r($args,true));
+
                         //Sends a request to Flickr's REST endpoint via POST.
-                        $this->response = $this->wpRequest->request($this->REST,$args);
+                        //$this->response = $this->wpRequest->request($this->REST,$args);
+                        $this->response = wp_remote_post($this->REST,$args);
                         if (!is_wp_error($this->response)) {
 	                          $this->cache($args, $this->response);
                         } else {
@@ -235,7 +240,10 @@ class Wp_Php_Flickr_Core {
                  * and you're concerned about time.  This will, however, change the structure of
                  * the result, so be sure that you look at the results.
                  */
-                $this->parsed_response = unserialize($this->response);
+                var_dump(print_r($this->response,true));
+                error_log(print_r($this->response,true));
+
+                $this->parsed_response = unserialize($this->response);//response;// unserialize
                 //$this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
                 if ($this->parsed_response['stat'] == 'fail') {
                         if ($this->die_on_error) 
