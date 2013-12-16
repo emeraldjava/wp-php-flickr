@@ -35,8 +35,30 @@ class Flickr_Shortcode {
 			get_option(wp_flickr::WP_FLICKR_API_KEY),
 			get_option(wp_flickr::WP_FLICKR_SECRET));	
 	}
+	
+	function wp_flickr_list_album() {
+		$params = array(
+				'api_key'	=> '38b77dc294e8ca6671ab35280c8bd2f3',
+				'method'	=> 'flickr.people.findByUsername',
+				'username'	=> 'bhaa',
+				'format'	=> 'php_serial',
+		);
+		$encoded_params = array();
+		foreach ($params as $k => $v){
+			$encoded_params[] = urlencode($k).'='.urlencode($v);
+		}
 		
-	function wp_flickr_list_album($attrs) {
+		# call the API and decode the response
+		$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+		echo $url;
+		
+		$rsp = file_get_contents($url);
+		
+		$rsp_obj = unserialize($rsp);
+		echo '<div>'.$rsp_obj.'</div>';
+	}
+		
+	function wp_flickr_list_album_core($attrs) {
 		extract(
 			shortcode_atts( array(
 			'foo' => 'something',
