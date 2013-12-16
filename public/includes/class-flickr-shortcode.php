@@ -53,9 +53,13 @@ class Flickr_Shortcode {
 		echo $url;
 		
 		$rsp = file_get_contents($url);
+		echo 'rsp '.$rsp;
+		
+		$res2 = wp_remote_get($url);
+		echo 'rsp2 '.$rsp2;
 		
 		$rsp_obj = unserialize($rsp);
-		echo '<div>'.$rsp_obj.'</div>';
+		echo '<div>'.print_r($rsp_obj,true).'</div>';
 	}
 		
 	function wp_flickr_list_album_core($attrs) {
