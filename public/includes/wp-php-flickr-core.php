@@ -206,13 +206,14 @@ class Wp_Php_Flickr_Core {
                 if (!($this->response = $this->getCached($args)) || $nocache) {
                         foreach ($args as $key => $data) {
                                 $auth_sig .= $key . $data;
-                                $body = array_merge(array($key => $data),$body);
+                                //$body = array_merge(array($key => $data),$body);
                         }
                         if (!empty($this->secret)) {
                                 $api_sig = md5($this->secret . $auth_sig);
-                                $body = array_merge(array("api_sig" => $api_sig),$body);
+                                $args = array_merge($args,array("api_sig" => $api_sig));
+                                //$body = array_merge(array("api_sig" => $api_sig),$body);
                         }
-                        $args = array_merge($args, $body);
+                        //$args = array_merge($args, $body);
 
                         // set any headers
                         $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
