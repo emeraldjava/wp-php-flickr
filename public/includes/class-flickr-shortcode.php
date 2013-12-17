@@ -99,14 +99,14 @@ class Flickr_Shortcode {
 		// load the default users photo's
 		$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//34896940@N06');
-		error_log('person '.$person);
-		var_dump($person,true);
+		//error_log('person '.$person);
+		//var_dump($person,true);
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
 		// $person = $this->wp_php_flickr_core->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
 	
-		$photos = $this->wp_php_flickr_core->people_getPublicPhotos('34896940@N06', NULL, NULL, 14, 10);
-		var_dump($photos);
-		error_log('$photos '.print_r($photos,true));
+		$photos = $this->wp_php_flickr_core->people_getPublicPhotos('34896940@N06', NULL, NULL, 100, 1);
+		//var_dump($photos);
+		//error_log('$photos '.sizeof($photos));
 	
 		// Loop through the photos and output the html
 		$list = '<div>Flickr</div>';
@@ -114,18 +114,19 @@ class Flickr_Shortcode {
 	
 			//error_log($photo);
 			//echo '<hr/>';
-			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]" >';
-			$list .= '<img border="0" alt="'.$photo[title].'" src="'.$this->wp_php_flickr->buildPhotoURL($photo, "thumbnail") .'">';
+			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]">';
+			$list .= '<img border="0" alt="'.$photo[title].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"thumbnail").'">';
 			// http://www.flickr.com/photos/34896940@N06/8542579566/
 			//echo "<img border='0' alt='$photo[title]' src=".$wp_php_flickr->buildPhotoURL($photo, "Square") . ">";
 			$list .= '</a>';
 			$i++;
 			// If it reaches the sixth photo, insert a line break
 			if ($i % 6 == 0) {
-				$list .= '<br>\n';
+				//$list .= '<br>\n';
 			}
 		}
-		error_log('$list '.$list);
+		//$list .= '';
+		//error_log('$list '.$list);
 		//var_dump($list);
 		return $list;
 	}

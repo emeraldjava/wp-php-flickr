@@ -225,9 +225,7 @@ class Wp_Php_Flickr_Core {
                         }
                         
                         $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&',$encoded_params);
-                        //$html = '<p>URL :'.$url.'</p>';
-                        
-                        error_log('http args '.$FLICKR_URL.' '.print_r($encoded_params,true));
+                        //error_log('http args '.$FLICKR_URL.' '.print_r($encoded_params,true));
 
                         //Sends a request to Flickr's REST endpoint via POST.
                         //$this->response = $this->wpRequest->request($this->REST,$args);
@@ -252,7 +250,7 @@ class Wp_Php_Flickr_Core {
                  * the result, so be sure that you look at the results.
                  */
                 //var_dump(print_r($this->response,true));
-                error_log('response '.$this->response);
+                //error_log('response '.$this->response);
 
                 $this->parsed_response = unserialize($this->response);//response;// unserialize
                 //$this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
