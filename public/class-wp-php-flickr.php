@@ -90,6 +90,7 @@ class Wp_Php_Flickr {
 		 */
 		add_shortcode('wp_flickr',array($flickr_shortcode,'wp_flickr_list_album'));
 		add_shortcode('wp_flickr_findByUsername',array($flickr_shortcode,'wp_flickr_findByUsername'));
+		add_shortcode('wp_flickr_list_album_core',array($flickr_shortcode,'wp_flickr_list_album_core'));
 		//add_action( 'TODO', array( $this, 'action_method_name' ) );
 		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 	}

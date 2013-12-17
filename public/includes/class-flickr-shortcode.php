@@ -48,7 +48,7 @@ class Flickr_Shortcode {
 		$rsp = file_get_contents($url);
 		$html .= '<p>$rsp = '.$rsp.'</p>';
 		
-		$request = wp_remote_get($url);
+		$request = wp_remote_post($url);
 		$response = wp_remote_retrieve_body( $request );
 		$html .= '<p>$response = '.$response.'</p>';
 		
@@ -97,10 +97,10 @@ class Flickr_Shortcode {
 		);
 	
 		// load the default users photo's
-		//$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
+		$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//34896940@N06');
-		//error_log('person '.$person);
-		//var_dump($person,true);
+		error_log('person '.$person);
+		var_dump($person,true);
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
 		// $person = $this->wp_php_flickr_core->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
 	

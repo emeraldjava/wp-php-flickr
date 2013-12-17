@@ -222,7 +222,9 @@ class Wp_Php_Flickr_Core {
 
                         //Sends a request to Flickr's REST endpoint via POST.
                         //$this->response = $this->wpRequest->request($this->REST,$args);
-                        $this->response = wp_remote_post($this->REST,$args);
+                        $flickr_http_response = wp_remote_post($this->REST,$args);
+                        $this->response = wp_remote_retrieve_body( $flickr_http_response );
+                        
                         if (!is_wp_error($this->response)) {
 	                          $this->cache($args, $this->response);
                         } else {
