@@ -212,18 +212,18 @@ class Wp_Php_Flickr_Core {
                                 $api_sig = md5($this->secret . $auth_sig);
                                 $body = array_merge(array("api_sig" => $api_sig),$body);
                         }
-                        $args = array_merge($args, $body);
+                        //$args = array_merge($args, $body);
 
                         // set any headers
                         $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
-                        $args = array_merge($args, $headers);
+                        //$args = array_merge($args, $headers);
 
                         $encoded_params = array();
                         foreach ($args as $k => $v){
                         	$encoded_params[] = urlencode($k).'='.urlencode($v);
                         }
                         
-                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&',$encoded_params);
                         //$html = '<p>URL :'.$url.'</p>';
                         
                         error_log('http args '.$FLICKR_URL.' '.print_r($encoded_params,true));
