@@ -89,6 +89,7 @@ class Wp_Php_Flickr {
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
 		add_shortcode('wp_flickr',array($flickr_shortcode,'wp_flickr_list_album'));
+		add_shortcode('wp_flickr_findByUsername',array($flickr_shortcode,'wp_flickr_findByUsername'));
 		//add_action( 'TODO', array( $this, 'action_method_name' ) );
 		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
 	}

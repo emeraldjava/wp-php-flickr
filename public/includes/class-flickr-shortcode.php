@@ -22,21 +22,14 @@ class Flickr_Shortcode {
 		//$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
-	function wp_flickr_list_albumx($attrs) {
+	function wp_flickr_findByUsername($attrs) {
 		extract(
 			shortcode_atts( array(
 				'foo' => 'something',
 				'bar' => 'something else',
 			), $atts )
 		);
-		return sprintf('%s plugin settings : %s %s',
-			wp_flickr::get_instance()->get_plugin_slug(),
-			//get_plugin_data('wp_flickr'),
-			get_option(wp_flickr::WP_FLICKR_API_KEY),
-			get_option(wp_flickr::WP_FLICKR_SECRET));	
-	}
-	
-	function wp_flickr_list_album() {
+		
 		$params = array(
 				'api_key'	=> '38b77dc294e8ca6671ab35280c8bd2f3',
 				'method'	=> 'flickr.people.findByUsername',
@@ -50,16 +43,48 @@ class Flickr_Shortcode {
 		
 		# call the API and decode the response
 		$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
-		echo $url;
+		$html = '<p>URL :'.$url.'</p>';
 		
 		$rsp = file_get_contents($url);
-		echo 'rsp '.$rsp;
+		$html .= '<p>$rsp = '.$rsp.'</p>';
 		
 		$res2 = wp_remote_get($url);
-		echo 'rsp2 '.$rsp2;
+		$html .= '<p>$res2 = '.$res2.'</p>';
 		
 		$rsp_obj = unserialize($rsp);
-		echo '<div>'.print_r($rsp_obj,true).'</div>';
+		$html .= '<p>'.print_r($rsp_obj,true).'</p>';
+		return $html;
+	}
+	
+	function wp_flickr_list_album() {
+		
+		//user_id' => $user_id, 'safe_search' => $safe_search, 'extras' => $extras, 'per_page' => $per_page, 'page' => $page
+		$params = array(
+				'api_key'	=> '38b77dc294e8ca6671ab35280c8bd2f3',
+				'method'	=> 'flickr.people.getPublicPhotos',
+				'per_page'  => 10,
+				'page'		=> 1,
+				'user_id'	=> '34896940@N06',
+				'format'	=> 'php_serial',
+		);
+		$encoded_params = array();
+		foreach ($params as $k => $v){
+			$encoded_params[] = urlencode($k).'='.urlencode($v);
+		}
+		
+		# call the API and decode the response
+		$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+		$html = '<p>URL :'.$url.'</p>';
+		
+		$rsp = file_get_contents($url);
+		$html .= '<p>$rsp = '.$rsp.'</p>';
+		
+		$res2 = wp_remote_get($url);
+		$html .= '<p>$res2 = '.$res2.'</p>';
+		
+		$rsp_obj = unserialize($rsp);
+		$html .= '<p>'.print_r($rsp_obj,true).'</p>';
+		return $html;
 	}
 		
 	function wp_flickr_list_album_core($attrs) {
