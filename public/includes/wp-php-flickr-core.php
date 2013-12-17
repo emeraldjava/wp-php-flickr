@@ -218,11 +218,14 @@ class Wp_Php_Flickr_Core {
                         $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
                         $args = array_merge($args, $headers);
 
-                        error_log('http args '.$this->REST.' '.print_r($args,true));
+                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&', $args);
+                        //$html = '<p>URL :'.$url.'</p>';
+                        
+                        error_log('http args '.$FLICKR_URL.' '.print_r($args,true));
 
                         //Sends a request to Flickr's REST endpoint via POST.
                         //$this->response = $this->wpRequest->request($this->REST,$args);
-                        $flickr_http_response = wp_remote_post($this->REST,$args);
+                        $flickr_http_response = wp_remote_post($FLICKR_URL);//$this->REST,$args);
                         $this->response = wp_remote_retrieve_body( $flickr_http_response );
                         
                         if (!is_wp_error($this->response)) {
@@ -242,8 +245,8 @@ class Wp_Php_Flickr_Core {
                  * and you're concerned about time.  This will, however, change the structure of
                  * the result, so be sure that you look at the results.
                  */
-                var_dump(print_r($this->response,true));
-                error_log(print_r($this->response,true));
+                //var_dump(print_r($this->response,true));
+                error_log('response '.$this->response);
 
                 $this->parsed_response = unserialize($this->response);//response;// unserialize
                 //$this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
