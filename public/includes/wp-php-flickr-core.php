@@ -218,10 +218,15 @@ class Wp_Php_Flickr_Core {
                         $headers = array_merge(array( 'Connection' => 'Keep-Alive' ),$headers);
                         $args = array_merge($args, $headers);
 
-                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&', $args);
+                        $encoded_params = array();
+                        foreach ($args as $k => $v){
+                        	$encoded_params[] = urlencode($k).'='.urlencode($v);
+                        }
+                        
+                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
                         //$html = '<p>URL :'.$url.'</p>';
                         
-                        error_log('http args '.$FLICKR_URL.' '.print_r($args,true));
+                        error_log('http args '.$FLICKR_URL.' '.print_r($encoded_params,true));
 
                         //Sends a request to Flickr's REST endpoint via POST.
                         //$this->response = $this->wpRequest->request($this->REST,$args);
