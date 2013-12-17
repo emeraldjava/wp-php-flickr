@@ -34,7 +34,7 @@ class Flickr_Shortcode {
 				'api_key'	=> '38b77dc294e8ca6671ab35280c8bd2f3',
 				'method'	=> 'flickr.people.findByUsername',
 				'username'	=> 'bhaa',
-				'format'	=> 'php_serial',
+				'format'	=> 'php_serial'
 		);
 		$encoded_params = array();
 		foreach ($params as $k => $v){
@@ -48,8 +48,9 @@ class Flickr_Shortcode {
 		$rsp = file_get_contents($url);
 		$html .= '<p>$rsp = '.$rsp.'</p>';
 		
-		$res2 = wp_remote_get($url);
-		$html .= '<p>$res2 = '.$res2.'</p>';
+		$request = wp_remote_get($url);
+		$response = wp_remote_retrieve_body( $request );
+		$html .= '<p>$response = '.$response.'</p>';
 		
 		$rsp_obj = unserialize($rsp);
 		$html .= '<p>'.print_r($rsp_obj,true).'</p>';
