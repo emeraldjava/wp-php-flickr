@@ -46,7 +46,7 @@ class Wp_Php_Flickr {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_slug = 'wp_php_flickr';
+	protected $plugin_slug = 'wp-php-flickr';
 
 	/**
 	 * Instance of this class.
