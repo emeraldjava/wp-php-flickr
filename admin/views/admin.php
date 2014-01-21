@@ -37,13 +37,6 @@
        	        <th scope="row">wp_php_flickr_secret</th>
        	        <td><input type="text" name="wp_php_flickr_secret" value="<?php echo get_option('wp_php_flickr_secret'); ?>" /></td>
        	        </tr>
-       	        <tr valign="top">
-		        <th scope="row">wp_php_flickr_debug_enabled</th>
-		        <td>
-				<input name="wp_php_flickr_debug_enabled" type="radio" value="1" <?php checked( '1', get_option('wp_php_flickr_debug_enabled')); ?> >Enabled</input>
-		        <input name="wp_php_flickr_debug_enabled" type="radio" value="0" <?php checked( '0', get_option('wp_php_flickr_debug_enabled')); ?> >Disabled</input>
-		        </td>
-		        </tr>
        	    </table>
    	    <?php submit_button(); ?>
    	</form>
