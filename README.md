@@ -1,7 +1,9 @@
 wp-php-flickr
 =============
 
-Rejig of the phpFlickr class to use the Wordpress DB and HTTP classes rather than the PEAR versions
+
+2014.01.21	Add option 'wp_php_flickr_debug_enabled' to allow debug logging to be turned on and off.
+0.0.18		Rejig of the phpFlickr class to use the Wordpress DB and HTTP classes rather than the PEAR versions
 
 https://code.google.com/p/phpflickr/source/browse/trunk/phpFlickr.php
 http://codex.wordpress.org/HTTP_API

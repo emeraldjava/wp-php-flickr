@@ -176,6 +176,7 @@ class Wp_Php_Flickr_Admin {
 		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_USER_ID);
 		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_API_KEY);
 		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_SECRET);
+		register_setting($this->plugin_slug,Wp_Php_Flickr::WP_FLICKR_DEBUG_ENABLED);
 	}
 
 	/**

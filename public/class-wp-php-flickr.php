@@ -63,6 +63,7 @@ class Wp_Php_Flickr {
 	const WP_FLICKR_USER_ID = 'wp_php_flickr_user_id';
 	const WP_FLICKR_API_KEY = 'wp_php_flickr_api_key';
 	const WP_FLICKR_SECRET = 'wp_php_flickr_secret';
+	const WP_FLICKR_DEBUG_ENABLED = 'wp_php_flickr_debug_enabled';
 
 	/**
 	 * Initialize the plugin by setting localization and loading public scripts
