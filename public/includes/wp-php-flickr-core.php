@@ -250,7 +250,7 @@ class Wp_Php_Flickr_Core {
                  * the result, so be sure that you look at the results.
                  */
                 //var_dump(print_r($this->response,true));
-                //error_log('response '.$this->response);
+                //error_log('253 response '.$this->response);
 
                 $this->parsed_response = unserialize($this->response);//response;// unserialize
                 //$this->parsed_response = $this->clean_text_nodes(unserialize($this->response['response']));
