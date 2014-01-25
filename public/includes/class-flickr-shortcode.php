@@ -19,7 +19,53 @@ class Flickr_Shortcode {
 		require_once( plugin_dir_path( __FILE__ ) . '//wp-php-flickr-core.php' );
 		$this->wp_php_flickr_core = new Wp_Php_Flickr_Core(
 			get_option(Wp_Php_Flickr::WP_FLICKR_API_KEY),get_option(Wp_Php_Flickr::WP_FLICKR_SECRET));
-		//$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
+		//$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_php_flickr'); // TODO make table name a setting
+	}
+	
+	function registerShortCodes() {
+		//add_shortcode('wp_flickr',array($flickr_shortcode,'wp_flickr_list_album'));
+		//add_shortcode('wp_flickr_findByUsername',array($flickr_shortcode,'wp_flickr_findByUsername'));
+		
+		add_shortcode('wp_flickr_photosets_getphotos',array($this,'wp_flickr_photosets_getphotos'));
+		add_shortcode('wp_flickr_photosets_getlist',array($this,'wp_flickr_photosets_getlist'));
+		
+		add_shortcode('wp_flickr_list_album_core',array($this,'wp_flickr_list_album_core'));
+		
+	}
+
+	/**
+	 * Returns all photos in a specific set
+	 * @param unknown $atts
+	 */
+	function wp_flickr_photosets_getphotos($atts) {
+		extract(
+			shortcode_atts( array(
+				'photoset_id' => '72157639926180483'
+			), $atts )
+		);
+		$photoSet = $this->wp_php_flickr_core->photosets_getPhotos($photoset_id,null,null,500,1,null);
+		$photos = $photoSet['photoset']['photo'];
+		return $this->listPhotos($photos,$photoset_id);
+	}
+	
+	function wp_flickr_photosets_getlist() {
+		
+		$sets = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
+		//var_dump($sets);
+		
+		return 'sets';
+	}
+	
+	private function listPhotos($photos,$photoset_id){
+		$list = '<div id=photos-'.$photoset_id.'>';
+		foreach ($photos as $photo) {
+	
+			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto['.$photoset_id.']">';
+			$list .= '<img border="0" alt="'.$photo[title].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"thumbnail").'">';
+			$list .= '</a>';
+		}
+		$list.='</div>';
+		return $list;
 	}
 	
 	function wp_flickr_findByUsername($attrs) {
@@ -88,6 +134,8 @@ class Flickr_Shortcode {
 		return $html;
 	}
 		
+
+	
 	function wp_flickr_list_album_core($attrs) {
 		extract(
 			shortcode_atts( array(
@@ -98,13 +146,14 @@ class Flickr_Shortcode {
 	
 		// load the default users photo's
 		$person = $this->wp_php_flickr_core->people_findByUsername(get_option(Wp_Php_Flickr::WP_FLICKR_USERNAME));
+		var_dump($person);
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//34896940@N06');
 		//error_log('person '.$person);
 		//var_dump($person,true);
 		//$person = $this->wp_php_flickr_core->people_findByUsername('bhaa');//eoinfegan');//get_option('bhaa_flickr_username'));
 		// $person = $this->wp_php_flickr_core->people_findByUsername('tomhealy');//eoinfegan');//get_option('bhaa_flickr_username'));
 	
-		$photos = $this->wp_php_flickr_core->people_getPublicPhotos('34896940@N06', NULL, NULL, 100, 1);
+		$photos = $this->wp_php_flickr_core->people_getPublicPhotos('34896940@N06', NULL, NULL, 500, 1);
 		//var_dump($photos);
 		//error_log('$photos '.sizeof($photos));
 	
@@ -112,6 +161,7 @@ class Flickr_Shortcode {
 		$list = '<div>Flickr</div>';
 		foreach ((array)$photos['photos']['photo'] as $photo) {
 	
+			//var_dump($photo);
 			//error_log($photo);
 			//echo '<hr/>';
 			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto[bhaa]">';
