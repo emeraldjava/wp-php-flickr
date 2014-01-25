@@ -19,7 +19,7 @@ class Flickr_Shortcode {
 		require_once( plugin_dir_path( __FILE__ ) . '//wp-php-flickr-core.php' );
 		$this->wp_php_flickr_core = new Wp_Php_Flickr_Core(
 			get_option(Wp_Php_Flickr::WP_FLICKR_API_KEY),get_option(Wp_Php_Flickr::WP_FLICKR_SECRET));
-		//$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_php_flickr'); // TODO make table name a setting
+		$this->wp_php_flickr_core->enableCache(Wp_Php_Flickr_Core::DB,'wp_flickr_cache'); // TODO make table name a setting
 	}
 	
 	function registerShortCodes() {

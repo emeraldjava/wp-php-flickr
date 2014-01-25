@@ -162,14 +162,15 @@ class Wp_Php_Flickr_Core {
         function cache ($request, $response) {
                 //Caches the unparsed XML of a request.
                 $reqhash = md5(serialize($request));
+                error_log($reqhash);
                 if ($this->cache == 'db') {
                 		global $wpdb;
                         //$this->cache_db->query("DELETE FROM $this->cache_table WHERE request = '$reqhash'");
-                        if ($wpdb->get_var("SELECT COUNT(*) FROM {$this->cache_table} WHERE request = '$reqhash'")) {
+                        if ($wpdb->get_var('SELECT COUNT(*) FROM '.$this->cache_table.' WHERE request="'.$reqhash.'"')==1) {
                                 $sql = "UPDATE " . $this->cache_table . " SET response = ?, expiration = ? WHERE request = ?";
                                 $wpdb->query($sql, array($response, strftime("%Y-%m-%d %H:%M:%S"), $reqhash));
                         } else {
-                                $sql = "INSERT INTO " . $this->cache_table . " (request, response, expiration) VALUES ('$reqhash', '" . str_replace("'", "''", $response) . "', '" . strftime("%Y-%m-%d %H:%M:%S") . "')";
+                                $sql = "INSERT INTO " . $this->cache_table . " (request, response, expiration) VALUES ('.$reqhash.', '" . str_replace("'", "''", $response) . "', '" . strftime("%Y-%m-%d %H:%M:%S") . "')";
                                 $wpdb->query($sql);
                         }
                 } elseif ($this->cache == "fs") {
