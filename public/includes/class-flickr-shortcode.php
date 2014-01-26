@@ -65,7 +65,7 @@ class Flickr_Shortcode {
 			$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
 			
 			$listx = '[one_fourth last="'.$isLast.'"]'.$photoset['title']['_content'];
-			$listx .= '<a href="http://bhaaie/photos/?photoset_id='.$photoset['id'].'">';
+			$listx .= '<a href="http://bhaa.ie/photos/?photoset_id='.$photoset['id'].'">';
 			$listx .= '<img border="0" alt="'.$photoset['id'].'" src="'.$photoUrl.'">';
 			$listx .= '</a>[/one_fourth]';
 			$i++;
