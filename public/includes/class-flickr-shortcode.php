@@ -109,7 +109,7 @@ class Flickr_Shortcode {
 		}
 		
 		# call the API and decode the response
-		$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+		$url = "https://api.flickr.com/services/rest/?".implode('&', $encoded_params);
 		$html = '<p>URL :'.$url.'</p>';
 		
 		$rsp = file_get_contents($url);
@@ -141,7 +141,7 @@ class Flickr_Shortcode {
 		}
 		
 		# call the API and decode the response
-		$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+		$url = "https://api.flickr.com/services/rest/?".implode('&', $encoded_params);
 		$html = '<p>URL :'.$url.'</p>';
 		
 		$rsp = file_get_contents($url);

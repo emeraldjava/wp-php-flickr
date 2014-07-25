@@ -22,9 +22,9 @@ class Wp_Php_Flickr_Core {
 	
         var $api_key;
         var $secret;
-        var $REST = 'http://api.flickr.com/services/rest/';
-        var $Upload = 'http://api.flickr.com/services/upload/';
-        var $Replace = 'http://api.flickr.com/services/replace/';
+        var $REST = 'https://api.flickr.com/services/rest/';
+        var $Upload = 'https://api.flickr.com/services/upload/';
+        var $Replace = 'https://api.flickr.com/services/replace/';
         var $wpRequest;
         var $response;
         var $parsed_response;
@@ -225,7 +225,7 @@ class Wp_Php_Flickr_Core {
                         	$encoded_params[] = urlencode($k).'='.urlencode($v);
                         }
                         
-                        $FLICKR_URL = "http://api.flickr.com/services/rest/?".implode('&',$encoded_params);
+                        $FLICKR_URL = "https://api.flickr.com/services/rest/?".implode('&',$encoded_params);
                         //error_log('http args '.$FLICKR_URL.' '.print_r($encoded_params,true));
 
                         //Sends a request to Flickr's REST endpoint via POST.

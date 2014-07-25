@@ -18,7 +18,7 @@ foreach ($params as $k => $v){
 # call the API and decode the response
 #
 
-$url = "http://api.flickr.com/services/rest/?".implode('&', $encoded_params);
+$url = "https://api.flickr.com/services/rest/?".implode('&', $encoded_params);
 echo $url;
 
 $rsp = file_get_contents($url);
