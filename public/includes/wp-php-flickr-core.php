@@ -105,12 +105,12 @@ class Wp_Php_Flickr_Core {
                         			expiration DATETIME NOT NULL,
                         			INDEX ( request )
                         	) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
-                        	error_log('Calling SQL : '.$create_sql);
+                        	//error_log('Calling SQL : '.$create_sql);
                         	//error_log($create_sql);
                         	// We use the dbDelta method given by WP!
                         	require_once ABSPATH.'wp-admin/includes/upgrade.php';
                         	dbDelta($create_sql);
-                        	error_log("created table ".$table);
+                        	//error_log("created table ".$table);
                         } 
                         
                         if ($wpdb->get_var('SELECT COUNT(*) FROM '.$table) > $this->max_cache_rows) {
@@ -162,7 +162,7 @@ class Wp_Php_Flickr_Core {
         function cache ($request, $response) {
                 //Caches the unparsed XML of a request.
                 $reqhash = md5(serialize($request));
-                error_log($reqhash);
+                //error_log($reqhash);
                 if ($this->cache == 'db') {
                 		global $wpdb;
                         //$this->cache_db->query("DELETE FROM $this->cache_table WHERE request = '$reqhash'");

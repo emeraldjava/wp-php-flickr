@@ -26,10 +26,10 @@ class Flickr_Shortcode {
 		//add_shortcode('wp_flickr',array($flickr_shortcode,'wp_flickr_list_album'));
 		//add_shortcode('wp_flickr_findByUsername',array($flickr_shortcode,'wp_flickr_findByUsername'));
 		
-		add_shortcode('wp_flickr_photosets_getphotos',array($this,'wp_flickr_photosets_getphotos'));
+		//add_shortcode('wp_flickr_photosets_getphotos',array($this,'wp_flickr_photosets_getphotos'));
 		add_shortcode('wp_flickr_photosets_getlist',array($this,'wp_flickr_photosets_getlist'));
 		
-		add_shortcode('wp_flickr_list_album_core',array($this,'wp_flickr_list_album_core'));
+		//add_shortcode('wp_flickr_list_album_core',array($this,'wp_flickr_list_album_core'));
 		
 	}
 
@@ -37,7 +37,7 @@ class Flickr_Shortcode {
 	 * Returns all photos in a specific set
 	 * @param unknown $atts
 	 */
-	function wp_flickr_photosets_getphotos($atts) {
+	function xwp_flickr_photosets_getphotos($atts) {
 		extract(
 			shortcode_atts( array(
 				'photoset_id' => '72157639926180483'
@@ -48,30 +48,53 @@ class Flickr_Shortcode {
 		return $this->listPhotos($photos,$photoset_id);
 	}
 	
-	function wp_flickr_photosets_getlist() {
-		$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
-		$photosets = $resp['photoset'];//['photoset'];
-		$list = '<div id=sets>';
-		$i=0;
-		foreach ($photosets as $photoset) {
-			
-			$isFirst = '';
-			if($i % 4 == 1)
-				$isFirst = 'first';
-			
-			$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
-			
-			$listx = '[av_one_fourth '.$isFirst.' ][av_textblock]'.$photoset['title']['_content'].'[/av_textblock]';
-			$listx .= '<a href="http://bhaa.ie/photos/?photoset_id='.$photoset['id'].'">';
-			$listx .= '<img border="0" alt="'.$photoset['id'].'" src="'.$photoUrl.'">';
-			$listx .= '</a>[/av_one_fourth]';
-			$i++;
-			
-			$list .= do_shortcode($listx);
-		}
-		$list.='</div>';
+	function wp_flickr_photosets_getlist($attrs) {
 		
-		return $list;
+		$a = shortcode_atts( array(
+			'photosetid' => get_query_var( 'photosetid' )
+		), $attrs );
+		//error_log('shortcode attr :'.$a['photosetid'].':');
+		
+		$photosetid = $a['photosetid'];
+		//$photosetid = get_query_var( 'photosetid' );
+		error_log('$photosetid :'.$photosetid.':');
+		
+		if(empty($photosetid)){
+		
+			$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
+			$photosets = $resp['photoset'];//['photoset'];
+			$list = '<div id=sets>';
+			$i=0;
+			foreach ($photosets as $photoset) {
+				
+				$isFirst = '';
+				if($i % 4 == 1)
+					$isFirst = 'first';
+				
+				$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
+				
+				$listx = '[av_one_fourth '.$isFirst.' ][av_textblock]'.$photoset['title']['_content'].'[/av_textblock]';
+				$listx .= '<a href="'.home_url().'/photos/?photosetid='.$photoset['id'].'">';
+				$listx .= '<img border="0" alt="'.$photoset['id'].'" src="'.$photoUrl.'">';
+				$listx .= '</a>[/av_one_fourth]';
+				$i++;
+				
+				$list .= do_shortcode($listx);
+			}
+			$list.='</div>';		
+			return $list;
+		}
+		else
+		{
+			// handle a specific photoset
+			return $this->wp_flickr_photosets_getphotos($photosetid);
+		}
+	}
+	
+	function wp_flickr_photosets_getphotos($photosetid) {
+		$photoSet = $this->wp_php_flickr_core->photosets_getPhotos($photosetid,null,null,500,1,null);
+		$photos = $photoSet['photoset']['photo'];
+		return $this->listPhotos($photos,$photoset_id);
 	}
 	
 	private function listPhotos($photos,$photoset_id){

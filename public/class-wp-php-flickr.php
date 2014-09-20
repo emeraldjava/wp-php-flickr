@@ -16,8 +16,6 @@
  * If you're interested in introducing administrative or dashboard
  * functionality, then refer to `class-wp_flickr-admin.php`
  *
- * TODO: Rename this class to a proper name for your plugin.
- *
  * @package wp-php-flickr
  * @author  emeraldjava <paul.t.oconnell@gmail.com>
  */
@@ -90,8 +88,18 @@ class Wp_Php_Flickr {
 		/* Define custom functionality.
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
-		//add_action( 'TODO', array( $this, 'action_method_name' ) );
-		//add_filter( 'TODO', array( $this, 'filter_method_name' ) );
+		// hook add_query_vars function into query_vars
+		add_filter('query_vars', array($this,'wp_php_flickr_add_query_vars'));
+	}
+
+	/**
+	 * Register the 'photosetid' query var.
+	 * @param unknown $qvars
+	 * @return string
+	 */
+	function wp_php_flickr_add_query_vars($qvars) {
+		$qvars[] = "photosetid";
+		return $qvars;
 	}
 
 	/**
