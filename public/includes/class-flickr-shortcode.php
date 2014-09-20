@@ -49,25 +49,22 @@ class Flickr_Shortcode {
 	}
 	
 	function wp_flickr_photosets_getlist() {
-		
 		$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
-		//var_dump($resp);
 		$photosets = $resp['photoset'];//['photoset'];
-		//var_dump($photosets);
 		$list = '<div id=sets>';
 		$i=0;
 		foreach ($photosets as $photoset) {
 			
-			$isLast = 'no';
-			if($i % 4 == 0)
-				$isLast = 'yes';
+			$isFirst = '';
+			if($i % 4 == 1)
+				$isFirst = 'first';
 			
 			$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
 			
-			$listx = '[one_fourth last="'.$isLast.'"]'.$photoset['title']['_content'];
+			$listx = '[av_one_fourth '.$isFirst.' ][av_textblock]'.$photoset['title']['_content'].'[/av_textblock]';
 			$listx .= '<a href="http://bhaa.ie/photos/?photoset_id='.$photoset['id'].'">';
 			$listx .= '<img border="0" alt="'.$photoset['id'].'" src="'.$photoUrl.'">';
-			$listx .= '</a>[/one_fourth]';
+			$listx .= '</a>[/av_one_fourth]';
 			$i++;
 			
 			$list .= do_shortcode($listx);
