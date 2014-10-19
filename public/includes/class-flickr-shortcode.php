@@ -64,23 +64,32 @@ class Flickr_Shortcode {
 			$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
 			$photosets = $resp['photoset'];//['photoset'];
 			$list = '<div id=sets>';
-			$i=0;
+			$i=4;
 			foreach ($photosets as $photoset) {
 				
 				$isFirst = '';
-				if($i % 4 == 1)
+				//	if ($i % 4 == 0) print " class='stripe'"
+				if($i % 4 == 0)
 					$isFirst = 'first';
 				
 				$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
 				
-				$listx = '[av_one_fourth '.$isFirst.' ][av_textblock]'.$photoset['title']['_content'].'[/av_textblock]';
-				$listx .= '<a href="'.home_url().'/photos/?photosetid='.$photoset['id'].'">';
-				$listx .= '<img border="0" alt="'.$photoset['id'].'" src="'.$photoUrl.'">';
-				$listx .= '</a>[/av_one_fourth]';
+				$listx .= '[av_one_fourth '.$isFirst.' ]';
+				$listx .= '[av_notification title="number" color="custom" border="solid" custom_bg="#012c52" custom_font="#ffffff" size="normal"]';
+				$listx .= $photoset['title']['_content'].'[/av_notification]';
+
+				$link = home_url().'/photos/?photosetid='.$photoset['id'];
+
+				$listx .= sprintf("[av_image src='%s' attachment_size='full' align='center' 
+					animation='no-animation' link='manually,%s' target='' styling='' caption='' font_size='' appearance=''][/av_image]",
+					$photoUrl,$link
+				);
+
+				$listx .= '[/av_one_fourth]';
 				$i++;
-				
-				$list .= do_shortcode($listx);
 			}
+
+			$list .= do_shortcode($listx);
 			$list.='</div>';		
 			return $list;
 		}
@@ -99,10 +108,16 @@ class Flickr_Shortcode {
 	
 	private function listPhotos($photos,$photoset_id){
 		$list = '<div id=photos-'.$photoset_id.'>';
+
+		$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photos[0],"large").'" rel="prettyPhoto['.$photoset_id.']">';
+		$list .= '<img border="0" alt="'.$photo['title'].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photos[0],"large").'">';
+		$list .= '</a>';
+
+//		int count=4;
 		foreach ($photos as $photo) {
 	
 			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto['.$photoset_id.']">';
-			$list .= '<img border="0" alt="'.$photo['title'].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"thumbnail").'">';
+			//$list .= '<img border="0" alt="'.$photo['title'].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"thumbnail").'">';
 			$list .= '</a>';
 		}
 		$list.='</div>';
