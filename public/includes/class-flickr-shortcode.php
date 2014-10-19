@@ -57,7 +57,7 @@ class Flickr_Shortcode {
 		
 		$photosetid = $a['photosetid'];
 		//$photosetid = get_query_var( 'photosetid' );
-		error_log('$photosetid :'.$photosetid.':');
+		//error_log('$photosetid :'.$photosetid.':');
 		
 		if(empty($photosetid)){
 		
