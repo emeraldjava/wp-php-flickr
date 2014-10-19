@@ -64,18 +64,18 @@ class Flickr_Shortcode {
 			$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
 			$photosets = $resp['photoset'];//['photoset'];
 			$list = '<div id=sets>';
-			$i=4;
+			$i=3;
 			foreach ($photosets as $photoset) {
 				
 				$isFirst = '';
 				//	if ($i % 4 == 0) print " class='stripe'"
-				if($i % 4 == 0)
+				if($i % 3 == 0)
 					$isFirst = 'first';
 				
-				$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_t' . ".jpg";
+				$photoUrl = "http://farm" . $photoset['farm'] . ".static.flickr.com/" . $photoset['server'] . "/" . $photoset['primary'] . "_" . $photoset['secret'] . '_m' . ".jpg";
 				
-				$listx .= '[av_one_fourth '.$isFirst.' ]';
-				$listx .= '[av_notification title="number" color="custom" border="solid" custom_bg="#012c52" custom_font="#ffffff" size="normal"]';
+				$listx .= '[av_one_third '.$isFirst.' ]';
+				$listx .= '[av_notification title="" color="custom" border="solid" custom_bg="#012c52" custom_font="#ffffff" size="normal"]';
 				$listx .= $photoset['title']['_content'].'[/av_notification]';
 
 				$link = home_url().'/photos/?photosetid='.$photoset['id'];
@@ -85,7 +85,7 @@ class Flickr_Shortcode {
 					$photoUrl,$link
 				);
 
-				$listx .= '[/av_one_fourth]';
+				$listx .= '[/av_one_third]';
 				$i++;
 			}
 
