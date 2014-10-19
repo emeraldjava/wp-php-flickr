@@ -16,3 +16,8 @@ sitemap.xml.gz
 .project
 .buildpath
 build.xml
+wp-php-flickr
+
+wp-php-flickr.sublime-project
+
+*.sublime-workspace
