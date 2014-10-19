@@ -62,13 +62,12 @@ class Flickr_Shortcode {
 		if(empty($photosetid)){
 		
 			$resp = $this->wp_php_flickr_core->photosets_getList(get_option(Wp_Php_Flickr::WP_FLICKR_USER_ID));
-			$photosets = $resp['photoset'];//['photoset'];
+			$photosets = $resp['photoset'];
 			$list = '<div id=sets>';
 			$i=3;
 			foreach ($photosets as $photoset) {
 				
 				$isFirst = '';
-				//	if ($i % 4 == 0) print " class='stripe'"
 				if($i % 3 == 0)
 					$isFirst = 'first';
 				
@@ -106,14 +105,21 @@ class Flickr_Shortcode {
 		return $this->listPhotos($photos,$photoset_id);
 	}
 	
-	private function listPhotos($photos,$photoset_id){
-		$list = '<div id=photos-'.$photoset_id.'>';
+	private function listPhotos($photos,$photoset_id) {
 
-		$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photos[0],"large").'" rel="prettyPhoto['.$photoset_id.']">';
+		$list = do_shortcode(sprintf('[av_notification title="" color="custom" border="solid" custom_bg="#012c52" 
+			custom_font="#ffffff" size="normal"]%s[/av_notification]','Photos'));
+
+		$list .= do_shortcode(sprintf('[av_textblock ]<p style="text-align: center;"><span style="color: #0000ff;">%s</span></p>[/av_textblock]',
+			'Click on the image below to list throught the full set of photographs from the race.'));
+
+		$list .= '<div id=photos-'.$photoset_id.'>';
+
+		$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photos[5],"large").'" rel="prettyPhoto['.$photoset_id.']">';
 		$list .= '<img border="0" alt="'.$photo['title'].'" src="'.$this->wp_php_flickr_core->buildPhotoURL($photos[0],"large").'">';
 		$list .= '</a>';
 
-//		int count=4;
+
 		foreach ($photos as $photo) {
 	
 			$list .= '<a href="'.$this->wp_php_flickr_core->buildPhotoURL($photo,"large").'" rel="prettyPhoto['.$photoset_id.']">';
