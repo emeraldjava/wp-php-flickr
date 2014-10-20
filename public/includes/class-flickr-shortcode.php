@@ -110,8 +110,8 @@ class Flickr_Shortcode {
 		$list = do_shortcode(sprintf('[av_notification title="" color="custom" border="solid" custom_bg="#012c52" 
 			custom_font="#ffffff" size="normal"]%s[/av_notification]','Photos'));
 
-		$list .= do_shortcode(sprintf('[av_textblock ]<p style="text-align: center;"><span style="color: #0000ff;">%s</span></p>[/av_textblock]',
-			'Click on the image below to list throught the full set of photographs from the race.'));
+		$list .= do_shortcode(sprintf('[av_textblock ]<p style="text-align: center;"><span style="color: #012c52;">%s</span></p>[/av_textblock]',
+			'Click Image to Open Photo Gallery'));
 
 		$list .= '<div id=photos-'.$photoset_id.'>';
 
